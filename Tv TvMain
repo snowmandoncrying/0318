@@ -1,0 +1,129 @@
+
+package encapaulation;
+
+public class Tv {
+	private static Tv tv= new Tv();	//Tv 객체 생성
+	
+	static Tv getInstance() {		//getInstance() 메서드를 사용하여  Tv 객체를 리턴한다.
+					//new 연산자를 사용하여 객체를 생성할 수 없으며 메서드를 통해서만 객체를 받을 수 있다.
+		return tv;
+	}
+	
+	private Tv() {			//기본 생성자의 접근 제어자를 private로 변경하여 객체 생성 차단.
+	}
+
+	private int channel;			//기본값 0, 여기에 값을 넣어주면 바꿔서 출력하게 됨.
+	private int volume;			//기본값 0 
+	private boolean power;		//기본값 false
+	private boolean mute;
+	
+	
+	public boolean isPower() {		//현재 power상태는 바로 return 해주면 됨.
+		return power;
+	}
+	
+	public void setPower() {		//리모콘 전원 버튼이라고 생각하면 됨. 기본값 상태에서 한번 누르면 true 한번 더 누르면 false
+		power = !power;			
+	}
+	
+	public void getChannel() {		//channel번호를 출력만 할거니까 void	, 값을 넣어 가공하고 싶을땐 정수로 return타입을 받으면 된다..
+		System.out.println("현재 채널은:  "+ this.channel+"번 입니다.");
+	}
+	
+	public void setChannelUp() {				//값을 넣어야 하는 상태
+		if( channel > 0 && channel < 100) {		//1~99, 최대 채널이 100이니까 100번에서는 올라가지 않음. 99면 true- 1을 더해 출력 (딱 100)
+			channel ++;
+		}else {					//if의 범위를 넘어가면, 100번 이상이면 false - 다시 돌아가서 1이 출력됨 
+			channel = 1;
+		}
+		System.out.println("현재 채널은:  "+ this.channel+"번 입니다.");
+	}
+	
+	public void setChannelDown() {				//값을 넣어야 하는 상태
+		if( channel > 1 && channel <= 100) {			//2 ~ 100이면 1을 빼고 출력됨.
+			channel --;
+		}else {			
+			channel = 100;
+		}
+		System.out.println("현재 채널은:  "+ this.channel+"번 입니다.");
+	}
+	
+	public void setChannel(int channel) {
+		if(channel > 1 && channel <= 100) {
+			this.channel = channel;
+			System.out.println("현재 채널은:  "+ this.channel+"번 입니다.");		//입력된 값을 받는 거니까 if문 안에서 출력하는게 더 적절함.
+		}else {
+			System.out.println("현재 입력하신 "+channel+"은 없는 채널입니다."); 	//channel 앞에 this를 붙이면 현재 채널을 입력하는 것이 되어버림
+		}
+	}
+	public void setVolumeUp() {
+		if(volume >= 0 && volume < 50) {
+			volume ++;
+		}
+		System.out.println("현재 볼륨은 "+ this.volume+" 입니다.");
+	}
+	public void setVolumeDown() {
+		if(volume > 0 && volume < 50) {
+			volume --;
+		}
+		System.out.println("현재 볼륨은 "+ this.volume+" 입니다.");
+	}
+	public void setMute() {
+		mute = !mute;
+		if(mute) {
+			nowVolume = volume;
+			volume= 0;
+			System.out.println("현재 볼륨은 "+ this.volume+" 입니다.");
+		}else { 
+			nowVolume = volume;
+			System.out.println("현재 볼륨은 "+ this.volume+" 입니다.");
+		}
+	}
+	
+	public void show() {
+		System.out.println("현재 볼륨은:  "+ this.volume+" 입니다.");
+		System.out.println("현재 채널은:  "+ this.channel+"번 입니다.");	//매개변수 없기에 그냥 channel이라고 해도 된다.
+		
+		if(power) {
+			System.out.println("전원이 켜져 있습니다.");
+		}else {
+			System.out.println("전원이 꺼져 있습니다.");
+		}
+		
+		if(mute) {
+			System.out.println("현재 음소가 상태입니다.");
+		}else {
+			System.out.println("현재 음소거는 동작하지 않는 상태입니다.");
+		}
+		System.out.println("현재 채널은:  "+ this.channel+"번 입니다.");
+	}
+}
+
+package encapaulation;
+
+public class TvMain {
+
+	public static void main(String[] args) {
+		Tv tv = Tv.getInstance();
+
+        tv.setPower();			//한번 누르면 전원이 켜져 있음.
+		tv.show();
+        System.out.println();
+       
+        tv.setPower();			//또 한번 누르면 전원이 꺼져 있음.
+		tv.show();
+		System.out.println();
+		
+		tv.getChannel();
+		System.out.println();
+		
+		tv.setChannelUp();
+		tv.setChannelUp();
+		tv.setChannelUp();
+		tv.show();
+		System.out.println();
+		
+		tv.setMute();
+		tv.show();
+    }
+}
